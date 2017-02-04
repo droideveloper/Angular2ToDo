@@ -1,0 +1,39 @@
+<div class="content">
+  <header>
+    <md-input placeholder="What needs to be done?" [(ngModel)]="text" class="fill-horizontal" (keydown)="onkey($event)">
+      <md-hint align="align"></md-hint>
+    </md-input>
+  </header>
+  <main>
+    <div class="item" *ngFor="let task of dataSet; let index = i;">
+      <div [class.active]="task.state === TaskState.ACTIVE" 
+           [class.inactive]="task.state === TaskState.INACTIVE">
+           
+        <md-checkbox class="check" (change)="onstate(index, task)" [checked]="task.state === TaskState.INACTIVE" color="primary"></md-checkbox>   
+        <div class="text">{{ task.text }}</div>
+        <button class="button" md-button color="primary">
+          <md-icon class="icon">close</md-icon>
+        </button>
+      </div>
+    </div> 
+  </main>
+  <footer>
+    <div class="foot">
+      <div>
+        <span>{{ activeCount }} Active.</span>
+      </div>
+      <div class="center">
+        <span *ngFor="let state of states;let index = i;" 
+              [class.active]="state.selected" 
+              [class.chand]="!state.selected"
+              (click)="filterContent(state, index)">{{ state.title }}</span>
+      </div>
+      <div style="float: right">
+        <span *ngIf="inactiveCount > 0" (click)="clearTask()" class="chand">Clear Completed.</span>
+      </div>
+    </div>
+    <div class="x1"></div>
+    <div class="x2"></div>
+    <div class="x3"></div>
+  </footer>
+</div>
