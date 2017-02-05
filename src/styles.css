@@ -10,12 +10,13 @@ html, body {
 }
 
 .main-view {
-  min-width: 48px;
-  min-height: 48px;
-  margin: 0 auto;
+  width: 100%;
+  height: 100%;
 }
 
-.main-view img {
+.main-view > img {
+  min-width: 48px;
+  min-height: 48px;
   border: none;
   margin: 0 auto;
 }
