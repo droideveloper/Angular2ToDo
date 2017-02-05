@@ -27,7 +27,7 @@ export class MainController implements OnInit, OnDestroy {
     activeCount: number;
     inactiveCount: number;
 
-    constructor(private _storage: StorageImp) {}
+    constructor(private _storage: StorageImp) { }
 
     ngOnInit() {
       const self = this;
@@ -56,8 +56,10 @@ export class MainController implements OnInit, OnDestroy {
           const self = this;
           this._storage.create(this.text)
             .subscribe(entry => {
-              self.dataSet.push(entry);
-              // notify
+              const activeState = self.states.find(x => x.selected);
+              if (activeState.title !== 'INACTIVE') {
+                self.dataSet.push(entry);
+              }
               self.calcActiveAndInactiveCount();
               self.text = null;
               if (event.target instanceof HTMLElement) {
@@ -126,6 +128,22 @@ export class MainController implements OnInit, OnDestroy {
            self.dataSet = [];
            self.calcActiveAndInactiveCount();
          });
+    }
+
+    clearCurrent(index: number, task: TaskEntity): void {
+      const self = this;
+      task.state = TaskState.COMPLETED;
+      this.dataSet[index] = task;
+      Observable.from(this.dataSet)
+        .filter(x => x.state !== TaskState.COMPLETED)
+        .toArray()
+        .subscribe((entries) => {
+           self.dataSet = entries;
+           self.calcActiveAndInactiveCount();
+        }, error => {
+           self.dataSet = [];
+           self.calcActiveAndInactiveCount();
+        });
     }
 
     private calcActiveAndInactiveCount(): void {

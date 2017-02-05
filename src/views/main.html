@@ -11,7 +11,7 @@
            
         <md-checkbox class="check" (change)="onstate(index, task)" [checked]="task.state === TaskState.INACTIVE" color="primary"></md-checkbox>   
         <div class="text">{{ task.text }}</div>
-        <button class="button" md-button color="primary">
+        <button class="button" md-button color="primary" (click)="clearCurrent(index, task)">
           <md-icon class="icon">close</md-icon>
         </button>
       </div>
